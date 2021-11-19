@@ -49,7 +49,13 @@ function questionRender() {
     var questionName = document.getElementById("question");
     var currentQuestion = questions[questionIndex];
     questionName.textContent = currentQuestion.title;
-    
+    answers.innerHTML = "";
+    currentQuestion.choices.forEach(function (choice, i) {
+        var choiceButton = document.createElement("button");
+        choiceButton.setAttribute("value", choice);
+        choiceButton.textContent = choice;
+        answers.appendChild(choiceButton);
+    })
 }
 
 function clock() {
