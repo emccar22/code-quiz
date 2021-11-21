@@ -45,6 +45,48 @@ function startGame() {
     questionRender();
 }
 
+var rightWrong = document.createElement("div")
+    rightWrong.setAttribute("id", "right-wrong")
+
+var buttonHandler = function(event) {
+    var answer = event.target;
+    
+    if (answer.textContent == questions[questionIndex].answer) {
+        score++;
+        rightWrong.textContent = "Correct!";
+    } else {
+        time = time - 10;
+        rightWrong.textContent = "Wrong!";
+    }
+    questionIndex++;
+    if (questionIndex >= questions.length) {
+        quizStop();
+
+    } else {
+        questionRender(questionIndex);
+    }
+    questionEl.appendChild(rightWrong);
+}
+
+function quizStop() {
+    clearInterval(clockId);
+    questionEl.innerHTML = "";
+    timer.innerHTML = "";
+
+    var endHeader = document.createElement("h1")
+    endHeader.setAttribute("id", "end-header");
+    endHeader.textContent = "All Done!"
+    questionEl.appendChild(endHeader);
+
+    var pScore = document.createElement("p");
+    pScore.setAttribute("id", "final-score");
+    if (time >= 0) {
+        var finalScore = time;
+        pScore.textContent = "Your final score is " + finalScore;
+    }
+    questionEl.appendChild(pScore)
+}
+
 function questionRender() {
     var questionName = document.getElementById("question");
     var currentQuestion = questions[questionIndex];
@@ -53,9 +95,11 @@ function questionRender() {
     currentQuestion.choices.forEach(function (choice, i) {
         var choiceButton = document.createElement("button");
         choiceButton.setAttribute("value", choice);
+        choiceButton.setAttribute("id", "choice")
         choiceButton.textContent = choice;
         answers.appendChild(choiceButton);
-    })
+        choiceButton.addEventListener("click", buttonHandler);
+    });
 }
 
 function clock() {
@@ -66,6 +110,6 @@ function clock() {
     }
 }
 
-
-
 start.onclick = startGame; 
+
+
