@@ -26,7 +26,6 @@ var questions = [
     }
 ];
 
-var score = 0;
 var questionIndex= 0;
 var time = questions.length * 15;
 var timer = document.getElementById("time");
@@ -52,7 +51,6 @@ var buttonHandler = function(event) {
     var answer = event.target;
     
     if (answer.textContent == questions[questionIndex].answer) {
-        score++;
         rightWrong.textContent = "Correct!";
     } else {
         time = time - 10;
@@ -84,7 +82,41 @@ function quizStop() {
         var finalScore = time;
         pScore.textContent = "Your final score is " + finalScore;
     }
-    questionEl.appendChild(pScore)
+    questionEl.appendChild(pScore);
+
+    var inputForm = document.createElement("div");
+    inputForm.setAttribute("id", "input-form")
+    questionEl.appendChild(inputForm);
+    
+    var initialLabel = document.createElement("label");
+    initialLabel.setAttribute("id", "initial-label");
+    initialLabel.textContent = "Enter you initials: ";
+    inputForm.appendChild(initialLabel);
+    
+    var initalForm = document.createElement("input");
+    initalForm.setAttribute("type", "text");
+    initalForm.setAttribute("id", "initial-form");
+    inputForm.appendChild(initalForm);
+
+    var submitBtn = document.createElement("button");
+    submitBtn.setAttribute("type", "submit");
+    submitBtn.setAttribute("id", "form-submit");
+    submitBtn.textContent = "Submit";
+    inputForm.appendChild(submitBtn);
+
+    submitBtn.onclick = function () {
+        var initals = initalForm.value;
+        console.log(initals);
+        if (initals === "") {
+            window.alert("Please enter your initials!")
+        } else {
+            var endScore = {
+                initals: initals,
+                score: finalScore
+            }
+            localStorage.setItem("scores", JSON.stringify(endScore));
+        }
+    }
 }
 
 function questionRender() {
@@ -111,5 +143,3 @@ function clock() {
 }
 
 start.onclick = startGame; 
-
-
