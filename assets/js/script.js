@@ -35,6 +35,8 @@ var questionEl = document.getElementById("questions-div");
 
 var answers = document.getElementById("answers");
 var clockId;
+var scores = [];
+var scoreIdCounter = 0;
 
 function startGame() {
     main.setAttribute("class", "hide");
@@ -112,10 +114,15 @@ function quizStop() {
         } else {
             var endScore = {
                 initals: initals,
-                score: finalScore
+                score: finalScore,
+                id: scoreIdCounter
             }
-            localStorage.setItem("scores", JSON.stringify(endScore));
+
+            scores.push(endScore)
+            localStorage.setItem("scores", JSON.stringify(scores));
+            scoreIdCounter++
         }
+        
     }
 }
 
@@ -142,4 +149,10 @@ function clock() {
     }
 }
 
+var loadScores = function() {
+    scores.localStorage.getItem("scores");
+}
+
 start.onclick = startGame; 
+
+loadScores();
